@@ -52,7 +52,7 @@
     }
   },
   "variables": {
-    "location": "West US",
+    "location": "East US",
     "extensionName": "DockerExtension",
     "storageAccountType": "Standard_LRS",
     "publicIPAddressName": "swarmPublicIP",
@@ -342,7 +342,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/master/docker-swarm-mesos-cluster-simple/install_mesos.sh"
+            "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/install-mesos.sh"
           ],
           "commandToExecute": "[concat('sh install_mesos.sh ', 'master')]"
         }
@@ -380,9 +380,13 @@
     },
     {
       "type": "Microsoft.Compute/virtualMachines/extensions",
-      "name": "[concat(variables('vmName'), copyIndex()]",  
+      "name": "[concat(variables('vmName'), copyIndex())]",  
       "apiVersion": "2015-05-01-preview",
       "location": "[variables('location')]",
+      "copy": {
+        "name": "extLoop",
+        "count": "[parameters('slaveCount')]"
+      },
       "dependsOn": [
         "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]"
       ],
@@ -392,7 +396,7 @@
         "typeHandlerVersion": "1.2",
         "settings": {
           "fileUris": [
-            "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/master/docker-swarm-mesos-cluster-simple/install_mesos.sh"
+            "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/install-mesos.sh"
           ],
           "commandToExecute": "[concat('sh install_mesos.sh ', 'slave')]"
         }
