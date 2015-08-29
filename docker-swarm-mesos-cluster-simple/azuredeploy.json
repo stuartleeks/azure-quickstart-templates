@@ -59,7 +59,7 @@
     "resources": [
       {
         "type": "Microsoft.Storage/storageAccounts",
-        "name": "[parameters('newStorageAccountName')]",
+        "name": "[parameters('storageAccountName')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "properties": {
@@ -69,12 +69,12 @@
       {
         "apiVersion": "2015-05-01-preview",
         "type": "Microsoft.Network/publicIPAddresses",
-        "name": "[concat(variables('publicIPAddressName'), 'master')]",
+        "name": "[variables('publicIPAddressName')]",
         "location": "[variables('location')]",
         "properties": {
           "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
           "dnsSettings": {
-            "domainNameLabel": "dnsNameForPublicIP"
+            "domainNameLabel": "[parameters('dnsNameForPublicIP')]"
           }
         }
       },
@@ -163,7 +163,7 @@
         "name": "[concat(variables('nicName'), 'master')]",
         "location": "[variables('location')]",
         "dependsOn": [
-          "[concat('Microsoft.Network/publicIPAddresses/',concat(variables('publicIPAddressName'), 'master'))]",
+          "[concat('Microsoft.Network/publicIPAddresses/',concat(variables('publicIPAddressName')))]",
           "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
         ],
         "properties": {
@@ -173,7 +173,7 @@
               "properties": {
                 "privateIPAllocationMethod": "Dynamic",
                 "publicIPAddress": {
-                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName'), 'master'))]"
+                  "id": "[resourceId('Microsoft.Network/publicIPAddresses',concat(variables('publicIPAddressName')))]"
                 },
                 "subnet": {
                   "id": "[variables('subnetRef')]"
@@ -215,7 +215,7 @@
         "name": "[concat(variables('vmName'), 'master')]",
         "location": "[variables('location')]",
         "dependsOn": [
-          "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
           "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), 'master')]"
         ],
         "properties": {
@@ -237,7 +237,7 @@
             "osDisk": {
               "name": "osdisk",
               "vhd": {
-                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), 'master-osdisk.vhd')]"
+                "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), 'master-osdisk.vhd')]"
               },
               "caching": "ReadWrite",
               "createOption": "FromImage"
@@ -262,7 +262,7 @@
           "count": "[parameters('nodeCount')]"
         },
         "dependsOn": [
-          "[concat('Microsoft.Storage/storageAccounts/', parameters('newStorageAccountName'))]",
+          "[concat('Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
           "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'), copyIndex())]"
         ],
         "properties": {
@@ -284,7 +284,7 @@
             "osDisk": {
               "name": "osdisk",
               "vhd": {
-                "uri": "[concat('http://', parameters('newStorageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), copyIndex(), '-osdisk.vhd')]"
+                "uri": "[concat('http://', parameters('storageAccountName'), '.blob.core.windows.net/', variables('vmStorageAccountContainerName'), '/', variables('OSDiskName'), copyIndex(), '-osdisk.vhd')]"
               },
               "caching": "ReadWrite",
               "createOption": "FromImage"
@@ -301,7 +301,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(variables('vmName'), 'master', '/', '/newuserscript')]",  
+        "name": "[concat(variables('vmName'), 'master', '/newuserscript')]",  
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "dependsOn": [
@@ -321,7 +321,7 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(variables('vmName'), copyIndex(), '/', '/newuserscript')]",  
+        "name": "[concat(variables('vmName'), copyIndex(), '/newuserscript')]",  
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "copy": {
@@ -329,8 +329,7 @@
           "count": "[parameters('nodeCount')]"
         },
         "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]",
-          "[concat(variables('vmName'), 'master', '/', '/newuserscript')]"
+          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]"
         ],
         "properties": {
           "publisher": "Microsoft.OSTCExtensions",
