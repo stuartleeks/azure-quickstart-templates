@@ -1,3 +1,6 @@
+# The VM Name for the master should be passed in as a parameter
+masterVMName=$1
+
 # Setup
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
@@ -16,7 +19,7 @@ sudo service zookeeper stop
 echo manual | sudo tee /etc/init/zookeeper.override
 
 # Configure zk
-echo "zk://mesos-master:2181/mesos" | sudo tee /etc/mesos/zk
+echo "zk://$masterVMName:2181/mesos" | sudo tee /etc/mesos/zk
 
 # Stop and disable mesos-master
 sudo service mesos-master stop
