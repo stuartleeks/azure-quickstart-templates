@@ -329,7 +329,8 @@
           "count": "[parameters('nodeCount')]"
         },
         "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]"
+          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]",
+          "[concat(variables('vmName'), 'master', '/', '/newuserscript')]"
         ],
         "properties": {
           "publisher": "Microsoft.OSTCExtensions",
