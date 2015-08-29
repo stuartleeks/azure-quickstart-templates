@@ -35,7 +35,6 @@
       }
     },
     "variables": {
-      "scriptsRootURL": "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/"
       "location": "East US",
       "storageAccountType": "Standard_LRS",
       "publicIPAddressName": "acsPublicIP",
@@ -137,7 +136,7 @@
                 "sourceAddressPrefix": "*",
                 "destinationAddressPrefix": "*",
                 "access": "Allow",
-                "priority": 200,
+                "priority": 150,
                 "direction": "Inbound"
               }
             },
@@ -337,7 +336,8 @@
           "type": "CustomScriptForLinux",
           "typeHandlerVersion": "1.2",
           "settings": {
-            "fileUris": ["concat(variables('scriptsRootURL'), 'configure-node.sh')]"
+            "fileUris": [
+              "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/configure-node.sh"
             ],
             "commandToExecute": "[concat('sh configure-node.sh ', variables('vmName'), 'master')]"
           }
