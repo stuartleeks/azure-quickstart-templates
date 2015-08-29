@@ -2,10 +2,10 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-      "newStorageAccountName": {
+      "storageAccountName": {
         "type": "string",
         "metadata": {
-          "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed."
+          "description": "Unique DNS Name for the Storage Account where the Virtual Machine's disks will be placed. If the storage account does not aleady exist in this Resource Group it will be created."
         }
       },
       "adminUsername": {
@@ -74,7 +74,7 @@
         "properties": {
           "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
           "dnsSettings": {
-            "domainNameLabel": "[concat(parameters('dnsNameForPublicIP'), 'master')]"
+            "domainNameLabel": "dnsNameForPublicIP"
           }
         }
       },
@@ -315,7 +315,7 @@
             "fileUris": [
               "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/configure-master.sh"
             ],
-            "commandToExecute": "sh configure-master.sh"
+            "commandToExecute": "[concat('sh configure-master.sh ', variables('vmName'), 'master')]"
           }
         }
       },
@@ -347,11 +347,15 @@
     "outputs": {
       "SwarmManagerHostName": {
         "type": "string",
-        "value": "[reference(concat(variables('publicIPAddressName'), 'master')).dnsSettings.fqdn]"
+        "value": "[reference(variables('publicIPAddressName')).dnsSettings.fqdn]"
       },
       "SwarmManagerPort": {
         "type": "string",
         "value": "2375"
+      },
+      "MesosDashBoardPort": {
+        "type": "string",
+        "value": "5050"
       }
     }
   }

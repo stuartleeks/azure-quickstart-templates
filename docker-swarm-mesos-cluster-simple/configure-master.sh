@@ -1,3 +1,6 @@
+# The VM Name for the master should be passed in as a parameter
+masterVMName=$1
+
 # Setup
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
 DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
@@ -24,10 +27,10 @@ echo manual | sudo tee /etc/init/mesos-slave.override
 wget -qO- https://get.docker.com | sh
 
 # Run swarm manager container on port 2375 (no auth)
-sudo docker run --d -it -p 2375:2375 -p 3375:3375 swarm manage \
+sudo docker run -d -it -p 2375:2375 -p 3375:3375 swarm manage \
     -c mesos-experimental \
     --cluster-opt mesos.address=0.0.0.0 \
-    --cluster-opt mesos.port=3375 mesos-master:5050
+    --cluster-opt mesos.port=3375 $masterVMName:5050
 
 # Restart master process
 sudo service mesos-master restart
