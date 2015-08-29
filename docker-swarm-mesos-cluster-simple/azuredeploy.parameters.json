@@ -2,26 +2,20 @@
   "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "newStorageAccountName": {
-      "value": ""
+    "storageAccountName": {
+      "value": "rgmesos-test"
     },
     "adminUsername": {
-      "value": "test-user"
+      "value": "azure"
     },
     "adminPassword": {
-      "value": ""
+      "value": "abcde1234%"
     },
     "dnsNameForPublicIP": {
-      "value": ""
+      "value": "rgmesos-test"
     },
-    "ubuntuOSVersion": {
-      "value": ""
-    },
-    "slaveCount": {
-      "value": ""
-    },
-    "swarmClusterId": {
-      "value": ""
+    "nodeCount": {
+      "value": "2"
     }
   }
 }
