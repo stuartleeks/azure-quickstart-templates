@@ -6,19 +6,6 @@
 masterVMName=$1
 
 ##################
-# Install Mesos
-##################
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv E56151BF
-DISTRO=$(lsb_release -is | tr '[:upper:]' '[:lower:]')
-CODENAME=$(lsb_release -cs)
-
-echo "deb http://repos.mesosphere.com/${DISTRO} ${CODENAME} main" | \
-  sudo tee /etc/apt/sources.list.d/mesosphere.list
-sudo apt-get -y update
-
-sudo apt-get -y install mesos
-
-##################
 # Configure Mesos
 ##################
 
@@ -43,8 +30,7 @@ export SWARM_MESOS_USER=root
 # Configure Docker
 ##################
 
-# Install docker and listen on :2375 (no auth, but in vnet)
-wget -qO- https://get.docker.com | sh
+# Start Docker and listen on :2375 (no auth, but in vnet)
 echo 'DOCKER_OPTS="-H unix:// -H 0.0.0.0:2375"' | sudo tee /etc/default/docker
 sudo service docker restart
 
