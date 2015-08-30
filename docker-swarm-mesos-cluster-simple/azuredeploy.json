@@ -302,32 +302,11 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(variables('vmName'), 'master', '/install')]",
-        "apiVersion": "2015-05-01-preview",
-        "location": "[variables('location')]",
-        "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), 'master')]"
-        ],
-        "properties": {
-          "publisher": "Microsoft.OSTCExtensions",
-          "type": "CustomScriptForLinux",
-          "typeHandlerVersion": "1.2",
-          "settings": {
-            "fileUris": [
-              "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/install.sh"
-            ],
-            "commandToExecute": "sh install.sh"
-          }
-        }
-      },
-      {
-        "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(variables('vmName'), 'master', '/configuremaster')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
         "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), 'master')]",
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), 'master', '/extensions/install')]"
+          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), 'master')]"
         ],
         "properties": {
           "publisher": "Microsoft.OSTCExtensions",
@@ -343,30 +322,6 @@
       },
       {
         "type": "Microsoft.Compute/virtualMachines/extensions",
-        "name": "[concat(variables('vmName'), copyIndex(), '/install')]",
-        "apiVersion": "2015-05-01-preview",
-        "location": "[variables('location')]",
-        "copy": {
-          "name": "extLoop",
-          "count": "[parameters('nodeCount')]"
-        },
-        "dependsOn": [
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]"
-        ],
-        "properties": {
-          "publisher": "Microsoft.OSTCExtensions",
-          "type": "CustomScriptForLinux",
-          "typeHandlerVersion": "1.2",
-          "settings": {
-            "fileUris": [
-              "https://raw.githubusercontent.com/rgardler/azure-quickstart-templates/mesos/docker-swarm-mesos-cluster-simple/install.sh"
-            ],
-            "commandToExecute": "sh install.sh"
-          }
-        }
-      },
-      {
-        "type": "Microsoft.Compute/virtualMachines/extensions",
         "name": "[concat(variables('vmName'), copyIndex(), '/configurenode')]",
         "apiVersion": "2015-05-01-preview",
         "location": "[variables('location')]",
@@ -376,7 +331,6 @@
         },
         "dependsOn": [
           "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex())]",
-          "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), copyIndex(), '/extensions/install')]",
           "[concat('Microsoft.Compute/virtualMachines/', variables('vmName'), 'master', '/extensions/configuremaster')]"
         ],
         "properties": {
