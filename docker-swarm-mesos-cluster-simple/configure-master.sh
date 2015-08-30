@@ -2,9 +2,10 @@
 # Configure a Master
 ####################
 
-# The VM Name for the master should be passed in as a parameter
+# The VM Name for the master should be passed in as the first parameter
 masterVMName=$1
-
+# The Cluster Name should be passed in as the second parameter
+clusterName=$2
 #################
 # Install Mesos
 #################
@@ -27,10 +28,10 @@ sudo service mesos-slave stop
 echo manual | sudo tee /etc/init/mesos-slave.override
 
 # Set the master Zookeeper
-echo zk://masterVMName:2181/mesos | sudo tee /etc/mesos/zk
+echo zk://$masterVMName:2181/mesos | sudo tee /etc/mesos/zk
 
 # Specify a human readable name for the Cluster
-echo "ACS-"$masterVMName | sudo tee /etc/mesos-master/cluster
+echo $clusterName | sudo tee /etc/mesos-master/cluster
 
 #####################
 # Configure Zookeeper
