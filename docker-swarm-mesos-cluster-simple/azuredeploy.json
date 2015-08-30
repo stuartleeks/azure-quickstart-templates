@@ -47,7 +47,8 @@
       "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
       "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
       "vmName": "acs-",
-      "vmSizeNode": "Standard_D1",
+      "masterVMSize": "Standard_A1",
+      "nodeVMSize": "Standard_D1",
       "imagePublisher": "Canonical",
       "imageOffer": "UbuntuServer",
       "ubuntuOSVersion": "14.04.2-LTS",
@@ -220,7 +221,7 @@
         ],
         "properties": {
           "hardwareProfile": {
-            "vmSize": "Standard_A0"
+            "vmSize": "[variables('masterVMSize')"
           },
           "osProfile": {
             "computername": "[concat(variables('vmName'), 'master')]",
@@ -267,7 +268,7 @@
         ],
         "properties": {
           "hardwareProfile": {
-            "vmSize": "[variables('vmSizeNode')]"
+            "vmSize": "[variables('nodeVMSize')]"
           },
           "osProfile": {
             "computername": "[concat(variables('vmName'), copyIndex())]",
