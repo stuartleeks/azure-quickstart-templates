@@ -24,7 +24,7 @@ sudo service zookeeper stop
 echo manual | sudo tee /etc/init/zookeeper.override
 
 # Force the root user for SWARM executors
-echo export SWARM_MESOS_USER=root | sudo tee /etc/profile.d/swarm_user.sh
+echo export SWARM_MESOS_USER=daemon | sudo tee /etc/profile.d/swarm_user.sh
 
 ##################
 # Configure Docker
