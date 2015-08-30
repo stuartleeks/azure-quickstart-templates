@@ -221,7 +221,7 @@
         ],
         "properties": {
           "hardwareProfile": {
-            "vmSize": "[variables('masterVMSize')"
+            "vmSize": "[variables('masterVMSize')]"
           },
           "osProfile": {
             "computername": "[concat(variables('vmName'), 'master')]",
