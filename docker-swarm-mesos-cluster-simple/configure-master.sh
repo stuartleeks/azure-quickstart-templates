@@ -21,6 +21,9 @@ echo zk://$masterVMName:2181/mesos | sudo tee /etc/mesos/zk
 # Specify a human readable name for the Cluster
 echo $clusterName | sudo tee /etc/mesos-master/cluster
 
+# Force the root user for SWARM executors
+echo export SWARM_MESOS_USER=root | sudo tee /etc/profile.d/swarm_user.sh
+
 #####################
 # Configure Zookeeper
 #####################
