@@ -55,7 +55,7 @@ echo 1 | sudo tee /etc/zookeeper/conf/myid
 
 # Run swarm manager container on port 2375 (no auth)
 sudo docker run -d -e SWARM_MESOS_USER=root \
-	--restart=always 
+    --restart=always \
     -p 2375:2375 -p 3375:3375 swarm manage \
     -c mesos-experimental \
     --cluster-opt mesos.address=0.0.0.0 \
